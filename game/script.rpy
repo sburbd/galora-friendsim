@@ -1,12 +1,51 @@
-# The script of the game goes in this file.
+# search jumpsec to get to sections
 
-# Declare characters used by this game. The color argument colorizes the
-# name of the character.
+##jumpsec######## billcount ################
 
-###########################################################################
-############# styles ######################################################
+init -1 python:
 
+    def tspk(what, amt=0, stmt=None, **kwargs):
 
+        t(what, **kwargs)
+
+        global amount
+        amount = amt
+
+        global bill
+
+        portion = int(amt/5)
+
+        if amt != 0:
+
+            renpy.hide_screen("moneyadd", layer=None)
+            renpy.show_screen("moneyadd", moneyadded=amt)
+
+        if stmt != None:
+
+            renpy.hide_screen("moneystmt", layer=None)
+            renpy.show_screen("moneystmt", statement=stmt)
+
+        i = 5
+
+        while i > 0:
+
+            renpy.pause(0.02)
+
+            bill += portion
+            amt -= portion
+
+            i -= 1
+
+##jumpsec######## footnotes ################
+
+    def show_footnote(note):
+
+        renpy.show_screen("footnote", fndict[note], _layer="screens", _transient=False)
+        renpy.restart_interaction()
+
+define config.hyperlink_handlers = { 'footnote' : show_footnote }
+
+##jumpsec######### styles ####################
 
 style default:
     properties gui.text_properties()
@@ -23,7 +62,6 @@ style hyperlink_text:
 style gui_text:
     properties gui.text_properties("interface")
 
-
 style button:
     properties gui.button_properties("button")
 
@@ -31,13 +69,11 @@ style button_text is gui_text:
     properties gui.text_properties("button")
     yalign 0.5
 
-
 style label_text is gui_text:
     properties gui.text_properties("label", accent=True)
 
 style prompt_text is gui_text:
     properties gui.text_properties("prompt")
-
 
 style bar:
     ysize gui.bar_size
@@ -69,11 +105,9 @@ style vslider:
     base_bar Frame("gui/slider/vertical_[prefix_]bar.png", gui.vslider_borders, tile=gui.slider_tile)
     thumb "gui/slider/vertical_[prefix_]thumb.png"
 
-
 style frame:
     padding gui.frame_borders.padding
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
-
 
 style outlined:
     outlines [ (absolute(1), "#000", absolute(0), absolute(0)) ]
@@ -90,63 +124,45 @@ style choice_button_text:
     color "0000FF"
     font "courbd.ttf"
 
-################CHARACTERS########################
+##jumpsec####### CHARACTERS #################
 
 define narrator = Character(window_background="gui/textbox_narration.png", what_font='courbd.ttf', what_size=22,  color='#000000', what_color='#000000')
 define op = Character(window_background="gui/textbox_blank.png", what_font='courbd.ttf', what_size=28,  color='#FFFFFF', what_color='#FFFFFF', what_xalign=0.5, what_text_align=0.5)
-
-
-#this is just to show you what a default character would look like. the colo*Ur is the text colour of the box, not of the textbox ^-^
-define p = Character("PLACEH", color='#FFFFFF', image="placeh", window_background="gui/textbox_cobalt.png", who_outlines=[ (4, "#005682") ],)
-define o = Character("OLDERE", color='#FFFFFF', image="oldere", window_background="gui/textbox_jade.png", who_outlines=[ (4, "#008141") ],)
-#you need to edit the outlines depending on blood colour!
-
-# TAGORA
 define t = Character("TAGORA", color='#FFFFFF', image="tagora", window_background="gui/textbox_teal.png", who_outlines=[ (4, "#008282") ],)
-# GALEKH
 define g = Character("GALEKH", color='#FFFFFF', image="galekh", window_background="gui/textbox_indigo.png", who_outlines=[ (4, "#005682") ],)
 
+##jumpsec######## IMAGES ###################
 
+image tg clasp = Image("images/tagora/Tagora_Clasp.png", ypos=730, xanchor=640, yanchor=720)
+image tg doc = Image("images/tagora/Tagora_Document.png", ypos=730, xanchor=640, yanchor=720)
+image tg ew = Image("images/tagora/Tagora_Ew.png", ypos=730, xanchor=640, yanchor=720)
+image tg help = Image("images/tagora/Tagora_Helpful.png", ypos=730, xanchor=640, yanchor=720)
+image tg mad = Image("images/tagora/Tagora_Hollering.png", ypos=730, xanchor=640, yanchor=720)
+image tg judge = Image("images/tagora/Tagora_Judging.png", ypos=730, xanchor=640, yanchor=720)
+image tg nervous = Image("images/tagora/Tagora_Nervous.png", ypos=730, xanchor=640, yanchor=720)
+image tg neutral = Image("images/tagora/Tagora_Neutral.png", ypos=730, xanchor=640, yanchor=720)
+image tg neutral2 = Image("images/tagora/Tagora_Neutral2.png", ypos=730, xanchor=640, yanchor=720)
 
-############IMAGES AND SHIT#################
-image placeh = Image("images/game_bro.png", ypos=730)
-image oldere = Image("images/s.png", ypos=730)
-#i'd advise you keep ypos the same for the important characters!
-#also, i've left an ardata sprite in there just to help you to keep everything in proportion
+image gx wary = Image("images/galekh/galekh_disappointedpause.png", ypos=730, xanchor=640, yanchor=720)
+image gx thumb = Image("images/galekh/galekh_expressions001.png", ypos=730, xanchor=640, yanchor=720)
+image gx tie = Image("images/galekh/galekh_frustration.png", ypos=730, xanchor=640, yanchor=720)
+image gx angry = Image("images/galekh/galekh_glare.png", ypos=730, xanchor=640, yanchor=720)
+image gx hand = Image("images/galekh/galekh_neutral.png", ypos=730, xanchor=640, yanchor=720)
+image gx hand_nj = Image("images/galekh/galekh_nojacketneutral.png", ypos=730, xanchor=640, yanchor=720)
+image gx smile_nj = Image("images/galekh/galekh_nojacketpleased.png", ypos=730, xanchor=640, yanchor=720)
+image gx yelling = Image("images/galekh/galekh_pissed.png", ypos=730, xanchor=640, yanchor=720)
+image gx smile = Image("images/galekh/galekh_pleased.png", ypos=730, xanchor=640, yanchor=720)
 
-image gor_clasp = Image("images/tagora/Tagora_Clasp.png", ypos=730, xanchor=640, yanchor=720)
-image gor_doc = Image("images/tagora/Tagora_Document.png", ypos=730, xanchor=640, yanchor=720)
-image gor_ew = Image("images/tagora/Tagora_Ew.png", ypos=730, xanchor=640, yanchor=720)
-image gor_help = Image("images/tagora/Tagora_Helpful.png", ypos=730, xanchor=640, yanchor=720)
-image gor_mad = Image("images/tagora/Tagora_Hollering.png", ypos=730, xanchor=640, yanchor=720)
-image gor_judge = Image("images/tagora/Tagora_Judging.png", ypos=730, xanchor=640, yanchor=720)
-image gor_nervous = Image("images/tagora/Tagora_Nervous.png", ypos=730, xanchor=640, yanchor=720)
-image gor_neutral = Image("images/tagora/Tagora_Neutral.png", ypos=730, xanchor=640, yanchor=720)
-image gor_neutral2 = Image("images/tagora/Tagora_Neutral2.png", ypos=730, xanchor=640, yanchor=720)
+image gx question = Image("images/galekh/galekh_questioning.png", ypos=730, xanchor=640, yanchor=720)
+image gx shock = Image("images/galekh/galekh_surprise.png", ypos=730, xanchor=640, yanchor=720)
+image gx tattoo = Image("images/galekh/galekh_tattoocrookedsmile.png", ypos=730, xanchor=640, yanchor=720)
+image gx tattoo_flush = Image("images/galekh/galekh_tattooflush.png", ypos=730, xanchor=640, yanchor=720)
+image gx tattoo_hm = Image("images/galekh/galekh_tattooneutral.png", ypos=730, xanchor=640, yanchor=720)
+image gx tatto_wince = Image("images/galekh/galekh_tattoowince.png", ypos=730, xanchor=640, yanchor=720)
 
-image gal_wary = Image("images/galekh/galekh_disappointedpause.png", ypos=730, xanchor=640, yanchor=720)
-image gal_thumb = Image("images/galekh/galekh_expressions001.png", ypos=730, xanchor=640, yanchor=720)
-image gal_tie = Image("images/galekh/galekh_frustration.png", ypos=730, xanchor=640, yanchor=720)
-image gal_angry = Image("images/galekh/galekh_glare.png", ypos=730, xanchor=640, yanchor=720)
-image gal_hand = Image("images/galekh/galekh_neutral.png", ypos=730, xanchor=640, yanchor=720)
-image gal_hand_nj = Image("images/galekh/galekh_nojacketneutral.png", ypos=730, xanchor=640, yanchor=720)
-image gal_smile_nj = Image("images/galekh/galekh_nojacketpleased.png", ypos=730, xanchor=640, yanchor=720)
-image gal_yelling = Image("images/galekh/galekh_pissed.png", ypos=730, xanchor=640, yanchor=720)
-image gal_smile = Image("images/galekh/galekh_pleased.png", ypos=730, xanchor=640, yanchor=720)
+image bg alternia = "images/bgs/alternia.png"
 
-image gal_question = Image("images/galekh/galekh_questioning.png", ypos=730, xanchor=640, yanchor=720)
-image gal_shock = Image("images/galekh/galekh_surprise.png", ypos=730, xanchor=640, yanchor=720)
-image gal_tattoo = Image("images/galekh/galekh_tattoocrookedsmile.png", ypos=730, xanchor=640, yanchor=720)
-image gal_tattoo_flush = Image("images/galekh/galekh_tattooflush.png", ypos=730, xanchor=640, yanchor=720)
-image gal_tattoo_hm = Image("images/galekh/galekh_tattooneutral.png", ypos=730, xanchor=640, yanchor=720)
-image gal_tatto_wince = Image("images/galekh/galekh_tattoowince.png", ypos=730, xanchor=640, yanchor=720)
-
-
-
-image bg alternia = "images/background1.png"
-
-## COMMON TRANSFORMS ##
-#these are all transforms to make your sprite bounce around a little! it's super useful for making your game more dynamic
+##jumpsec##### TRANSFORMS ##############
 
 transform bounce:
     ypos 730
@@ -164,7 +180,6 @@ transform twitch:
     linear 0.06 ypos 730 xpos 640
 
 transform shudder:
-
     xpos 640
     linear 0.04 xpos 637
     linear 0.04 xpos 640
@@ -189,7 +204,6 @@ transform shaking:
     repeat
 
 transform shuddering:
-
     xpos 640
     linear 0.04 xpos 637
     linear 0.04 xpos 640
@@ -203,32 +217,26 @@ transform speaking:
 transform stopspeaking:
     easein 0.1 zoom 1
 
-#Quickly push sprite to side of screen
 transform shoveright:
-
     linear 0.1 xpos 960
 
 transform shoveleft:
-
     xpos 640
     linear 0.1 xpos 320
 
 transform shoveoffleft:
-
     linear 0.1 xpos -320
 
-#Quickly push sprite to default position, from offscreen bottom
 transform shoveup:
-
     xpos 640 ypos 1440
     linear 0.1 ypos 730
 
 ########################################################################
-######################### ACTUAL GAME SCRIPT ###########################
+##jumpsec################ ACTUAL GAME SCRIPT ###########################
 ########################################################################
+
 label start:
 
-    # This is used to easily add a formatted '>' to the start of choices in menus.
     $ pick = "{color=#000000}>{/color}"
 
     $ quick_menu = True
@@ -239,7 +247,6 @@ label start:
 
 label start2:
 
-    # Stop main menu music, or any other music playing, and transition to volume select.
     stop music fadeout 1.5
 
     show image "gui/main_menu.png"
@@ -266,21 +273,9 @@ label volumeone:
 
     scene black with Dissolve(1.5)
 
-    op "You have just crash landed on a planet called Alternia, and staggered from the smouldering wreckage of your ship."
+    op "First few lines of text from op"
 
-    op "You are now completely alone in a strange world."
-
-    op "Desperate for information, for provisions, and possibily a bit of medical attention."
-
-    op "But most of all, you are desperate for..."
-
-    op "{size=80}{=friend}FRIENDSHIP.{/=friend}{/size}"
-
-    op "Won't someone on this godforsaken rock be your buddy?"
-
-    op "Any weirdo will do. You're not that picky."
-
-    op "Hang on... What's this now? Is someone approaching...?"
+    op "Now going to volume select screen"
 
     call screen troll_select1
 
@@ -288,7 +283,8 @@ label volumeone:
 
     return
 
-#note: to edit the starting labels, you have to go into screens, under trollselect1. there might be some old gunk in there btw.
+##jumpsec################ TAGORA ROUTE ###########################
+
 label tagora_route:
 
     $ renpy.block_rollback()
@@ -298,6 +294,24 @@ label tagora_route:
     scene bg alternia with dissolve
 
     $ quick_menu = True
+
+    # TAGORA BILLS
+    $ bill = 0
+
+    $ tdone = "\n\n*__________"
+
+    # GALEKH FOOTNOTES
+    $ fndict = dict(
+    a1="1 I live right around the corner.\n2 This is not a threat; rather it is a genuine expression of the critical nature of my request.{a=footnote:b1}{b}¹{/b}{/a}",
+    b1="1 If it were a threat, you would know.",
+    a2="1 It is possible your palate is not experienced enough to tell the difference, but I can walk you through the simpler points.",
+    a3="1 Specifically, you misunderstanding me.\n2 I have spent considerable time in the interim researching you, of course, which is why I was able to track you down so easily.\n3 Rainbowfucker extraordinaire.{a=footnote:b3}{b}¹{/b}{/a}",
+    b3="1 He wishes.",
+    a4="1 Technically, not only specifically about that topic, but that is the pertinent piece of information in this conversational context.",
+    # etc etc
+    )
+
+    # End initial route setup
 
     "Yes, someone is approaching! A strange, grey-skinned alien, with some other modifier that I don't really want to come up with right now. Who could it be????????"
 
@@ -339,23 +353,44 @@ label tagora_route:
 
     return
 
+##jumpsec################ GALEKH ROUTE ###########################
+
 label galekh_route:
 
-    show oldere with moveinbottom
+    $ renpy.block_rollback()
 
-    o "Kung pow penis."
+    scene black with Dissolve(1.0)
+
+    scene bg alternia with dissolve
+
+    $ quick_menu = True
+
+    # TAGORA BILLS
+    $ bill = 0
+
+    $ tdone = "\n\n*__________"
+
+    # GALEKH FOOTNOTES
+    $ fndict = dict(
+    a1="1 I live right around the corner.\n2 This is not a threat; rather it is a genuine expression of the critical nature of my request.{a=footnote:b1}{b}¹{/b}{/a}",
+    b1="1 If it were a threat, you would know.",
+    a2="1 It is possible your palate is not experienced enough to tell the difference, but I can walk you through the simpler points.",
+    a3="1 Specifically, you misunderstanding me.\n2 I have spent considerable time in the interim researching you, of course, which is why I was able to track you down so easily.\n3 Rainbowfucker extraordinaire.{a=footnote:b3}{b}¹{/b}{/a}",
+    b3="1 He wishes.",
+    a4="1 Technically, not only specifically about that topic, but that is the pertinent piece of information in this conversational context.",
+    # etc etc
+    )
+
+    # End initial route setup
+
+    show gx smile with moveinbottom
+
+    g "Placeholder text."
 
     $ renpy.pause()
 
     stop music fadeout 1.0
 
     scene black with Dissolve(1.0)
-
-
-
-
-
-
-
 
 return

@@ -4,7 +4,6 @@
 
 init offset = -1
 
-
 ################################################################################
 ## Styles
 ################################################################################
@@ -24,7 +23,6 @@ style hyperlink_text:
 style gui_text:
     properties gui.text_properties("interface")
 
-
 style button:
     properties gui.button_properties("button")
 
@@ -32,13 +30,11 @@ style button_text is gui_text:
     properties gui.text_properties("button")
     yalign 0.5
 
-
 style label_text is gui_text:
     properties gui.text_properties("label", accent=True)
 
 style prompt_text is gui_text:
     properties gui.text_properties("prompt")
-
 
 style bar:
     ysize gui.bar_size
@@ -70,17 +66,14 @@ style vslider:
     base_bar Frame("gui/slider/vertical_[prefix_]bar.png", gui.vslider_borders, tile=gui.slider_tile)
     thumb "gui/slider/vertical_[prefix_]thumb.png"
 
-
 style frame:
     padding gui.frame_borders.padding
     background Frame("gui/frame.png", gui.frame_borders, tile=gui.frame_tile)
 
 
-
 ################################################################################
 ## In-game screens
 ################################################################################
-
 
 ## Say screen ##################################################################
 ##
@@ -345,6 +338,48 @@ screen troll_select1():
 
         imagebutton auto "images/charselect/tagora_button_%s.png" action Jump("tagora_route") pos (0, 0)
         imagebutton auto "images/charselect/galekh_button_%s.png" action Jump("galekh_route") pos (640, 0)
+
+##jumpsec########### TAGORA'S BILLS #####################
+
+screen billcount():
+
+    image "images/money/moneygui.png"
+
+    hbox:
+
+        pos (925, 10)
+
+        text "[bill]" color "#000" minwidth 85
+        image "images/money/cashmoney.png"
+
+screen moneyadd(moneyadded):
+
+    if moneyadded < 0:
+
+        text "[moneyadded]{image=money}" at moneybounce color "#008282" outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ] bold True size 26
+
+    else:
+
+        text "+[moneyadded]{image=money}" at moneybounce color "#008282" outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ] bold True size 26
+
+screen moneystmt(statement):
+
+    text "[statement]" at statementbounce color "#008282" xmaximum 350 outlines [ (absolute(2), "#000", absolute(1), absolute(1)) ] bold True size 26
+
+##jumpsec########## GALEKH'S FOOTNOTES #####################
+
+screen footnote(note):
+    image "images/footnote/footnote.png" xpos 308 ypos 176
+
+    imagebutton auto "images/footnote/xbutton_%s.png" xpos 968 ypos 160 action Hide("footnote")
+
+    hbox:
+
+        pos (368, 208)
+
+        text "[note]" color "#FFF" xmaximum 580
+
+##jumpsec########## END TAGORA'S BILLS ###################
 
 
 ## Main Menu screen ############################################################
@@ -719,16 +754,11 @@ screen about():
             text _("")
             text _("")
             text _("")
-            text _("")
-            text _("")
-            text _("")
-            text _("")
             text _("By the way, Hazel is a furry. This will be forever immortalised and if you remove this I will come to your house and personally shoot you.")
 
 
 ## This is redefined in options.rpy to add text to the about screen.
 define gui.about = ""
-
 
 style about_label is gui_label
 style about_label_text is gui_label_text
@@ -736,7 +766,6 @@ style about_text is gui_text
 
 style about_label_text:
     size gui.label_text_size
-
 
 ## Load and Save screens #######################################################
 ##
