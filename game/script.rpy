@@ -13,7 +13,7 @@ init -1 python:
 
         global bill
 
-        portion = int(amt/5)
+        portion = int(amt/10)
 
         if amt != 0:
 
@@ -25,7 +25,7 @@ init -1 python:
             renpy.hide_screen("moneystmt", layer=None)
             renpy.show_screen("moneystmt", statement=stmt)
 
-        i = 5
+        i = 10
 
         while i > 0:
 
@@ -160,7 +160,17 @@ image gx tattoo_flush = Image("images/galekh/galekh_tattooflush.png", ypos=730, 
 image gx tattoo_hm = Image("images/galekh/galekh_tattooneutral.png", ypos=730, xanchor=640, yanchor=720)
 image gx tatto_wince = Image("images/galekh/galekh_tattoowince.png", ypos=730, xanchor=640, yanchor=720)
 
+image tbox = Image("gui/textbox_teal.png")
+
+image money = "images/money/cashmoney.png"
+
 image bg alternia = "images/bgs/alternia.png"
+image bg tg_bath = "images/bgs/tagorabath.png"
+image bg tg_ext = "images/bgs/tagoraexterior.png"
+image bg tg_int = "images/bgs/tagorainterior.png"
+
+image gx_good_end = "images/endings/Galekh_Good_End.png"
+image tg_good_end = "images/endings/Tagora_win.png"
 
 ##jumpsec##### TRANSFORMS ##############
 
@@ -230,6 +240,54 @@ transform shoveoffleft:
 transform shoveup:
     xpos 640 ypos 1440
     linear 0.1 ypos 730
+
+# transform statementbounce:
+#     parallel:
+#         alpha 0.0
+#         linear 0.1 alpha 1.0
+#         pause 1
+#         easeout 1 alpha 0.0
+#     parallel:
+#         xpos 910 ypos 110
+#         easein 1 ypos 95
+#         pause 1
+#         easeout 1 ypos 110
+#
+# transform moneybounce:
+#     parallel:
+#         alpha 0.0
+#         linear 0.1 alpha 1.0
+#         pause 1
+#         easeout 1 alpha 0.0
+#     parallel:
+#         xpos 910 ypos 80
+#         easein 1 ypos 65
+#         pause 1
+#         easeout 1 ypos 80
+
+transform moneybounce:
+    parallel:
+        alpha 0.0
+        linear 0.1 alpha 1.0
+        pause 1.8
+        easeout 2.0 alpha 0.0
+    parallel:
+        xpos 910 ypos 80
+        easein 1 ypos 65
+        pause 1.8
+        easeout 1 ypos 80
+
+transform statementbounce:
+    parallel:
+        alpha 0.0
+        linear 0.1 alpha 1.0
+        pause 1.8
+        easeout 2 alpha 0.0
+    parallel:
+        xpos 910 ypos 110
+        easein 1 ypos 95
+        pause 1.8
+        easeout 1 ypos 110
 
 ########################################################################
 ##jumpsec################ ACTUAL GAME SCRIPT ###########################
@@ -317,33 +375,39 @@ label tagora_route:
 
     window hide
 
-    play music "music/ASSGORE.mp3" loop
+    play music "music/tagora_theme.mp3" loop
 
-    show placeh with moveinbottom
+    show tg neutral with moveinbottom
 
-    p "Wow, this sure is some sample text!"
+    show screen billcount
 
-    show placeh at twitch
+    show tbox
 
-    p "wow"
+    tspk "Some sample text [tdone]" (amt=100, stmt="First line of text")
 
-    show placeh at nod
+    show tg neutral2 at twitch
 
-    p "yeah"
+    tspk "More sample text. [tdone]" (amt=10, stmt="Initial constructs")
 
-    show placeh at shoveoffleft
+    show tg judge at nod
 
-    p "And those were sure some transforms!"
+    tspk "Eurgh." (amt=10, stmt="Initial constructs")
 
-    #this is where it ends. OOF.
+    show tg help at shoveoffleft
+
+    hide tbox
+
+    tspk "Bye." (amt=-110)
+
+    hide screen billcount
 
     $ renpy.pause(0.5)
 
     $ quick_menu = False
 
-    play music "music/game_over.mp3" fadeout 1.0
+    play music "music/victory_jingle.mp3" fadeout 1.0 noloop
 
-    scene weegee with Dissolve(1.0)
+    scene tg_good_end with Dissolve(1.0)
 
     $ renpy.pause()
 

@@ -235,20 +235,15 @@ screen quick_menu():
 
     if quick_menu:
 
-        hbox:
-            style_prefix "quick"
+        imagebutton auto "gui/quick_save_%s.png" action ShowMenu('save') pos (20, 566)
+        imagebutton auto "gui/quick_log_%s.png" action ShowMenu('history') pos (20, 640)
+        imagebutton auto "gui/quick_skip_%s.png" action Skip() alternate Skip(fast=True, confirm=True) pos (94, 640)
 
-            xalign 0.5
-            yalign 1.0
+        imagebutton auto "gui/quick_menu_%s.png" action MainMenu(confirm=True) pos (1122, 640)
+        imagebutton auto "gui/quick_options_%s.png" action ShowMenu('preferences') pos (1196, 640)
 
-            textbutton _("Back") action Rollback()
-            textbutton _("History") action ShowMenu('history')
-            textbutton _("Skip") action Skip() alternate Skip(fast=True, confirm=True)
-            textbutton _("Auto") action Preference("auto-forward", "toggle")
-            textbutton _("Save") action ShowMenu('save')
-            textbutton _("Q.Save") action QuickSave()
-            textbutton _("Q.Load") action QuickLoad()
-            textbutton _("Prefs") action ShowMenu('preferences')
+        if renpy.variant("pc"):
+            imagebutton auto "gui/quick_help_%s.png" action ShowMenu('help') pos (1196, 566)
 
 
 ## This code ensures that the quick_menu screen is displayed in-game, whenever
